@@ -8,7 +8,8 @@ var StudentSchema = new mongoose.Schema(
     image: String,
     dob: Date,
     year: Number,
-    grade: Number
+    grade: Number,
+    graduated: Boolean
   },
   {
     versionKey: false //optional (to remove _v: 0 when add new data)

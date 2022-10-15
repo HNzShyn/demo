@@ -16,15 +16,5 @@ router.get('/quote', (req, res) => {
   res.send(text)
 })
 
-router.get('/api', (req, res) => {
-  var data = 
-  {
-    name: "Nguyen Tuan Minh",
-    age: 23,
-    address: "Ha Noi",
-    gender: 'male'
-  }
-  res.json(data);
-})
 
 module.exports = router;

@@ -7,22 +7,25 @@ var logger = require('morgan')
 var indexRouter = require('./routes/index')
 var studentRouter = require('./routes/student')
 var lecturerRouter = require('./routes/lecturer')
-
-// var cors = require('cors')
+var apiRouter = require('./routes/api')
 
 var mongoose = require('mongoose')
-var url = 'mongodb://localhost:27017/cloud'
+var url =
+    "mongodb+srv://hnzshyn:shyn1903112002@cluster0.djzhqbp.mongodb.net/test"
+
+// var url =
+//     'mongodb+srv://codecode12345:123456789m@cluster0.ik5tvr8.mongodb.net/cloud'
 mongoose.connect(url, { useNewUrlParser: true }, err => {
-  if (!err) {
-    console.log('DB connect succeed !')
-  } else {
-    console.error(err)
-  }
+    if (!err) {
+        console.log('DB connect succeed !')
+    } else {
+        console.error(err)
+    }
 })
 
-var hbs = require('hbs');
-hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
-
+var hbs = require('hbs')
+hbs.registerHelper('dateFormat', require('handlebars-dateformat'))
+hbs.registerHelper('equal', require('handlebars-helper-equal'))
 
 var app = express()
 
@@ -33,7 +36,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
-// app.use(cors())
+//Note: cần cài đặt package "cors" trước
+//cmd: npm install cors
+var cors = require('cors')
+app.use(cors())
+
+
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -43,27 +51,27 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/student', studentRouter)
 app.use('/lecturer', lecturerRouter)
+app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404))
+    next(createError(404))
 })
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
+    // set locals, only providing error in development
+    res.locals.message = err.message
+    res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  // render the error page
-  res.status(err.status || 500)
-  res.render('error')
+    // render the error page
+    res.status(err.status || 500)
+    res.render('error')
 })
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-  console.log('http://localhost:3000')
+    console.log('http://localhost:3000')
 })
-
 
 module.exports = app
